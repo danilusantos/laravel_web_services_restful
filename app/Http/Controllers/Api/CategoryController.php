@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\CategoryRequest;
 use App\Models\Category;
 use Illuminate\Http\Request;
 
@@ -14,21 +15,21 @@ class CategoryController extends Controller
     {
         $this->category = $category;
     }
-    public function index(Category $category, Request $request)
+    public function index(Request $request)
     {
         $categories = $this->category->getResults($request->name);
 
         return response()->json($categories, 200);
     }
 
-    public function store(Request $request)
+    public function store(CategoryRequest $request)
     {
         $category = $this->category->create($request->all());
 
         return response()->json($category, 201);
     }
 
-    public function update(Request $request, $id)
+    public function update(CategoryRequest $request, $id)
     {
         $category = $this->category->find($id);
 
