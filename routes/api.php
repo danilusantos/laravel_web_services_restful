@@ -3,7 +3,7 @@
 use App\Http\Controllers\Api\CategoryController;
 use Illuminate\Support\Facades\Route;
 
-Route::name('categories.')
+/* Route::name('categories.')
     ->controller(CategoryController::class)
     ->prefix('categories')
     ->group(function () {
@@ -11,4 +11,8 @@ Route::name('categories.')
         Route::post('/', 'store')->name('store');
         Route::put('/{id}', 'update')->name('update');
         Route::delete('/{id}', 'delete')->name('delete');
-    });
+    }); */
+
+Route::apiResource('categories', CategoryController::class, [
+    'except' => 'show'
+]);
