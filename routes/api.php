@@ -13,6 +13,4 @@ use Illuminate\Support\Facades\Route;
         Route::delete('/{id}', 'delete')->name('delete');
     }); */
 
-Route::apiResource('categories', CategoryController::class, [
-    'except' => 'show'
-]);
+Route::apiResource('categories', CategoryController::class);

@@ -15,11 +15,21 @@ class CategoryController extends Controller
     {
         $this->category = $category;
     }
+
     public function index(Request $request)
     {
         $categories = $this->category->getResults($request->name);
 
         return response()->json($categories, 200);
+    }
+
+    public function show($id)
+    {
+        if (!$category = $this->category->find($id)) {
+            return response()->json(['error' => 'Not Found'], 404);
+        }
+
+        return response()->json($category, 200);
     }
 
     public function store(CategoryRequest $request)
