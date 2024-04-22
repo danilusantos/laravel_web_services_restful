@@ -27,4 +27,17 @@ class CategoryController extends Controller
 
         return response()->json($category, 201);
     }
+
+    public function update(Request $request, $id)
+    {
+        $category = $this->category->find($id);
+
+        if (!$category) {
+            return response()->json(['error' => 'Not Found'], 404);
+        }
+
+        $category->update($request->all());
+
+        return response()->json($category, 200);
+    }
 }
