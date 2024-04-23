@@ -9,6 +9,7 @@ use Illuminate\Http\Request;
 class ProductController extends Controller
 {
     private $product;
+    private $totalPage = 10;
 
     public function __construct(Product $product)
     {
@@ -22,7 +23,9 @@ class ProductController extends Controller
      */
     public function index(Request $request)
     {
-        $products = $this->product->getResults($request->name);
+        $products = $this->product
+            ->getResults($request->name)
+            ->paginate($this->totalPage);
 
         return response()->json($products, 200);
     }

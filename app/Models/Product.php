@@ -18,9 +18,9 @@ class Product extends Model
     public function getResults($name = null)
     {
         if (!$name) {
-            return $this->get();
+            return $this;
         }
 
-        return $this->where('name', 'LIKE', "%{$name}%")->get();
+        return $this->where('name', 'LIKE', "%{$name}%");
     }
 }
