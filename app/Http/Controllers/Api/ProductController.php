@@ -23,9 +23,7 @@ class ProductController extends Controller
      */
     public function index(Request $request)
     {
-        $products = $this->product
-            ->getResults($request->name)
-            ->paginate($this->totalPage);
+        $products = $this->product->getResults($request->all(), $this->totalPage);
 
         return response()->json($products, 200);
     }
