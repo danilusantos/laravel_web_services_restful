@@ -103,6 +103,8 @@ class ProductController extends Controller
             return response()->json(['error' => 'Not Found'], 404);
         }
 
+        $this->destroyImage($product->image);
+
         $product->delete();
 
         return response()->json(['success' => true], 204);
