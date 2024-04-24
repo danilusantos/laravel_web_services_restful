@@ -25,7 +25,7 @@ class ProductController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(ProductRequest $request)
+    public function index(Request $request)
     {
         $products = $this->product->getResults($request->all(), $this->totalPage);
 
