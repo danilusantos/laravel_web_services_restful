@@ -24,26 +24,21 @@ class ProductRequest extends FormRequest
     public function rules()
     {
         switch ($this->method()) {
-            case 'POST':
-                $rules = [
+            case "POST":
+                return [
                     'category_id'   => 'required|exists:categories,id',
-                    'name'          => 'required|min:3|max:10|unique:products',
+                    'name'          => "required|min:3|max:10|unique:products,name",
                     'description'   => 'max:1000',
                     'image'         => 'image'
                 ];
-                break;
-            case 'PUT':
-                $rules = [
+            case "PUT":
+                return [
                     'category_id'   => 'required|exists:categories,id',
                     'name'          => "required|min:3|max:10|unique:products,name,{$this->segment(3)},id",
                     'description'   => 'max:1000',
                     'image'         => 'image'
                 ];
-                break;
-            default:
-                $rules = [];
-        }
 
-        return $rules;
+        }
     }
 }

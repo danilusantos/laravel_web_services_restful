@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\ProductRequest;
 use App\Models\Product;
+use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 
 class ProductController extends Controller
@@ -37,7 +38,23 @@ class ProductController extends Controller
      */
     public function store(ProductRequest $request)
     {
-        $product = $this->product->create($request->all());
+        $data = $request->all();
+
+        if ($request->hasFile('image') && $request->file('image')->isValid()) {
+            $name = Str::slug($request->name);
+            $extension = $request->image->extension();
+
+            $nameFile = "{$name}.{$extension}";
+            $data['image'] = $nameFile;
+
+            $upload = $request->image->storeAs('products', $nameFile);
+
+            if (! $upload) {
+                return response()->json(['error' => 'Fail_Upload'], 500);
+            }
+        }
+
+        $product = $this->product->create($data);
 
         return response()->json($product, 201);
     }
