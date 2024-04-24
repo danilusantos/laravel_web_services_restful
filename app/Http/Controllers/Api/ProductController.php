@@ -7,11 +7,13 @@ use App\Http\Requests\ProductRequest;
 use App\Models\Product;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class ProductController extends Controller
 {
     private $product;
     private $totalPage = 10;
+    private $pathImage = "products";
 
     public function __construct(Product $product)
     {
@@ -41,17 +43,7 @@ class ProductController extends Controller
         $data = $request->all();
 
         if ($request->hasFile('image') && $request->file('image')->isValid()) {
-            $name = Str::slug($request->name);
-            $extension = $request->image->extension();
-
-            $nameFile = "{$name}.{$extension}";
-            $data['image'] = $nameFile;
-
-            $upload = $request->image->storeAs('products', $nameFile);
-
-            if (! $upload) {
-                return response()->json(['error' => 'Fail_Upload'], 500);
-            }
+            $this->saveImage($data, $request);
         }
 
         $product = $this->product->create($data);
@@ -87,7 +79,14 @@ class ProductController extends Controller
             return response()->json(['error' => true], 404);
         }
 
-        $product->update($request->all());
+        $data = $request->all();
+
+        if ($request->hasFile('image') && $request->file('image')->isValid()) {
+            $this->destroyImage($product->image);
+            $data = $this->saveImage($data, $request);
+        }
+
+        $product->update($data);
 
         return response()->json($product, 200);
     }
@@ -107,5 +106,29 @@ class ProductController extends Controller
         $product->delete();
 
         return response()->json(['success' => true], 204);
+    }
+
+    private function saveImage($data, $request): array
+    {
+        $name = Str::slug($request->name);
+        $extension = $request->image->extension();
+
+        $nameFile = "{$name}.{$extension}";
+        $data['image'] = $nameFile;
+
+        $upload = $request->image->storeAs($this->pathImage, $nameFile);
+
+        if (! $upload) {
+            return response()->json(['error' => 'Fail_Upload'], 500);
+        }
+
+        return $data;
+    }
+
+    private function destroyImage($image): void
+    {
+        if ($image && Storage::exists("{$this->pathImage}/{$image}")) {
+            Storage::delete("{$this->pathImage}/{$image}");
+        }
     }
 }
