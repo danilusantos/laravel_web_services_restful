@@ -14,5 +14,9 @@ use Illuminate\Support\Facades\Route;
         Route::delete('/{id}', 'delete')->name('delete');
     }); */
 
+Route::controller(CategoryController::class)->group(function () {
+    Route::get('categories/{id}/products', 'products');
+});
+
 Route::apiResource('categories', CategoryController::class);
 Route::apiResource('products', ProductController::class);
