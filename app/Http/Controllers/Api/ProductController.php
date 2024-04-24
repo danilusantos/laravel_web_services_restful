@@ -79,6 +79,12 @@ class ProductController extends Controller
      */
     public function destroy($id)
     {
-        //
+        if (!$product = $this->product->find($id)) {
+            return response()->json(['error' => 'Not Found'], 404);
+        }
+
+        $product->delete();
+
+        return response()->json(['success' => true], 204);
     }
 }
