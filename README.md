@@ -13,7 +13,7 @@ das funcionalidades para o uso de api, como também sobre o design, a segurança
 Nesse curso, os recursos que serão gravados via API, serão categorias de produtos e produtos onde,
 através do Laravel, será gerenciados seus respectivos relacionamentos.
 
-Foi utilizado o Laravel na versão 8, para acompanhar a versão oferecida pelo curso apesar de defasada (^5.6).
+Foi utilizado o Laravel na versão 8, para acompanhar a versão oferecida pelo curso apesar de defasada (^5.6) e PHP 7.4.
 Mas os mesmos padrões, com algumas melhorias nas versões mais atuais, ainda são aplicadas.
 
 ## Informações Técnicas <a name = "technical"></a>
